@@ -20,7 +20,7 @@ class WelcomePage extends StatefulWidget {
   _WelcomePageState createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _WelcomePageState extends State<WelcomePage> with AutomaticKeepAliveClientMixin{
   var _searchTextController = TextEditingController();
 
   @override
@@ -40,6 +40,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       decoration: BoxDecoration(
           color: ThemeProvider.themeOf(context).id == 'light'
@@ -70,19 +71,20 @@ class _WelcomePageState extends State<WelcomePage> {
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.all(300.w),
+                        padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.white),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(40))),
                         child: TextField(
                           style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
+                          decoration: InputDecoration.collapsed(
                               border: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 22.h),
                               hintText: "搜索内容",
                               hintStyle: TextStyle(color: Colors.white),
-                              prefixIcon:
-                                  Icon(Icons.search, color: Colors.white)),
+                              // prefixIcon:
+                              //     Icon(Icons.search, color: Colors.white)
+                                  ),
                           controller: _searchTextController,
                           onSubmitted: (s) => _search(s),
                         ),
@@ -97,4 +99,7 @@ class _WelcomePageState extends State<WelcomePage> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

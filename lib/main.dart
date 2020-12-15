@@ -74,7 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Kingtous个人博客 | Kingtous Blog"),
+        elevation: 0,
       ),
+      extendBody: true,
       body: MainFramePage(),
       floatingActionButton: FloatingActionButton(
         tooltip: '搜索',
@@ -86,6 +88,8 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [FlatButton(onPressed: null, child: Text("首页"))],
       )),
       endDrawer: _buildDrawer(context),
+      drawerEnableOpenDragGesture: true,
+      endDrawerEnableOpenDragGesture: true,
     );
   }
 
