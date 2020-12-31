@@ -20,7 +20,8 @@ class WelcomePage extends StatefulWidget {
   _WelcomePageState createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> with AutomaticKeepAliveClientMixin{
+class _WelcomePageState extends State<WelcomePage>
+    with AutomaticKeepAliveClientMixin {
   var _searchTextController = TextEditingController();
 
   @override
@@ -35,7 +36,6 @@ class _WelcomePageState extends State<WelcomePage> with AutomaticKeepAliveClient
   void _search(content) {
     Provider.of<BlogDetailProvider>(context, listen: false)
         .setPath("assets/notes/test_note.md");
-    Get.toNamed('/note');
   }
 
   @override
@@ -70,7 +70,7 @@ class _WelcomePageState extends State<WelcomePage> with AutomaticKeepAliveClient
                   children: [
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.all(300.w),
+                        margin: EdgeInsets.all(200.w),
                         padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.white),
@@ -79,14 +79,17 @@ class _WelcomePageState extends State<WelcomePage> with AutomaticKeepAliveClient
                         child: TextField(
                           style: TextStyle(color: Colors.white),
                           decoration: InputDecoration.collapsed(
-                              border: InputBorder.none,
-                              hintText: "搜索内容",
-                              hintStyle: TextStyle(color: Colors.white),
-                              // prefixIcon:
-                              //     Icon(Icons.search, color: Colors.white)
-                                  ),
+                            border: InputBorder.none,
+                            hintText: "搜索内容",
+                            hintStyle: TextStyle(color: Colors.white),
+                            // prefixIcon:
+                            //     Icon(Icons.search, color: Colors.white)
+                          ),
                           controller: _searchTextController,
-                          onSubmitted: (s) => _search(s),
+                          onSubmitted: (s) {
+                            _search(s);
+                            Navigator.of(context).pushNamed('/note');
+                          },
                         ),
                       ),
                     ),

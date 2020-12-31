@@ -8,12 +8,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kingtous_blog/app_module.dart';
 import 'package:kingtous_blog/blog/detail/blog_detail.dart';
 import 'package:kingtous_blog/blog/detail/providers/blog_detail_provider.dart';
+import 'package:kingtous_blog/blog/pages/about_page.dart';
 import 'package:kingtous_blog/blog/pages/main_frame_page.dart';
+import 'package:kingtous_blog/blog/pages/route_notfound_page.dart';
+import 'package:kingtous_blog/common/theme_utils.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:theme_provider/theme_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -33,95 +38,47 @@ class MyApp extends StatelessWidget {
         ],
         child: ThemeProvider(
           themes: [
-            AppTheme.light(
-                id: "light"), // This is standard light theme (id is default_light_theme)
-            AppTheme.dark(
-                id: "dark"), // This is standard dark theme (id is default_dark_theme)
+            ThemeUtils.getAppDarkTheme(),
+            // This is standard light theme (id is default_light_theme)
+            ThemeUtils.getAppLightTheme(),
+            // This is standard dark theme (id is default_dark_theme)
           ],
           child: ThemeConsumer(
               child: Builder(
             builder: (themeContext) => GetMaterialApp(
+              builder: (context, widget) => ResponsiveWrapper.builder(
+                  ClampingScrollWrapper.builder(context, widget),
+                  maxWidth: 1200,
+                  minWidth: 600,
+                  defaultScale: true,
+                  breakpoints: [
+                    ResponsiveBreakpoint.resize(480, name: MOBILE),
+                    ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                    ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+                  ],
+                  background: Container(
+                    color: ThemeUtils.isDarkMode(context)
+                        ? Colors.black
+                        : Colors.white,
+                  )),
               title: 'Kingtous的个人博客 | Kingtous\' Blog',
               theme: ThemeProvider.themeOf(themeContext).data,
               getPages: [
-                GetPage(name: "/", page: ()=>MyHomePage()),
-                GetPage(name: "/note", page: ()=>BlogDetailPage()),
-                GetPage(name: "/index", page: ()=>BlogDetailPage()),
+                GetPage(
+                    name: "/",
+                    page: () => MainFramePage(),transition: Transition.fade),
+                GetPage(
+                    name: "/note",
+                    page: () => BlogDetailPage(),transition: Transition.fade),
+                GetPage(
+                    name: "/about",
+                    page: () => AboutMePage(),transition: Transition.fade),
               ],
+              unknownRoute:
+                  GetPage(name: '/404', page: () => RouteNotFoundPage(),transition: Transition.native),
             ),
           )),
         ),
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  static final endDrawerKey = GlobalKey<DrawerControllerState>();
-  static final drawerKey = GlobalKey<DrawerControllerState>();
-
-  @override
-  Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        designSize: Size(1920, 1080), allowFontScaling: true);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Kingtous个人博客 | Kingtous Blog"),
-        elevation: 0,
-      ),
-      extendBody: true,
-      body: MainFramePage(),
-      floatingActionButton: FloatingActionButton(
-        tooltip: '搜索',
-        onPressed: () {  },
-        child: Icon(Icons.search),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-      drawer: Drawer(
-          child: Column(
-        children: [FlatButton(onPressed: null, child: Text("首页"))],
-      )),
-      endDrawer: _buildDrawer(context),
-      drawerEnableOpenDragGesture: true,
-      endDrawerEnableOpenDragGesture: true,
-    );
-  }
-
-  Widget _buildDrawer(BuildContext context) {
-    return Drawer(
-      semanticLabel: "偏好设置",
-      key: endDrawerKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("夜间模式"),
-                SizedBox(
-                  width: 20.w,
-                ),
-                Switch(
-                  value: ThemeProvider.themeOf(context).id == 'dark',
-                  // true为黑暗模式
-                  onChanged: (option) {
-                    option
-                        ? ThemeProvider.controllerOf(context).setTheme("dark")
-                        : ThemeProvider.controllerOf(context).setTheme("light");
-                  },
-                ),
-              ],
-            ),
-          )
-        ],
       ),
     );
   }

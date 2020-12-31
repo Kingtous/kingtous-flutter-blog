@@ -8,7 +8,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:get/get.dart';
 import 'package:kingtous_blog/blog/detail/providers/blog_detail_provider.dart';
+import 'package:kingtous_blog/blog/pages/base/base_frame_page.dart';
 import 'package:provider/provider.dart';
 import 'package:markdown/markdown.dart' as md;
 
@@ -17,7 +19,7 @@ class BlogDetailPage extends StatefulWidget {
   _BlogDetailPageState createState() => _BlogDetailPageState();
 }
 
-class _BlogDetailPageState extends State<BlogDetailPage> {
+class _BlogDetailPageState extends BaseFramePageState<BlogDetailPage> {
   var _scrollController = ScrollController();
   var _markdownData = "";
 
@@ -35,7 +37,7 @@ class _BlogDetailPageState extends State<BlogDetailPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildContent(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("博文详情")),
       body: Container(
@@ -44,7 +46,12 @@ class _BlogDetailPageState extends State<BlogDetailPage> {
           controller: _scrollController,
           selectable: true,
           data: _markdownData,
+          physics: BouncingScrollPhysics(),
           imageDirectory: '',
+          extensionSet: md.ExtensionSet(
+            md.ExtensionSet.gitHubFlavored.blockSyntaxes,
+            [md.CodeSyntax(),md.AutolinkSyntax(),md.ImageSyntax(),md.EmojiSyntax(),...md.ExtensionSet.gitHubFlavored.inlineSyntaxes]
+          ),
         ),
       ),
     );
