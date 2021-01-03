@@ -5,17 +5,24 @@
  * @LastEditTime: 2020-11-12 18:23:56
  * @Description: Kingtous' Code
  */
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_screenutil/screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kingtous_blog/app_module.dart';
 import 'package:kingtous_blog/blog/detail/blog_detail.dart';
 import 'package:kingtous_blog/blog/detail/providers/blog_detail_provider.dart';
 import 'package:kingtous_blog/blog/pages/about_page.dart';
+import 'package:kingtous_blog/blog/pages/blog_detail_page.dart';
+import 'package:kingtous_blog/blog/pages/blog_page.dart';
 import 'package:kingtous_blog/blog/pages/main_frame_page.dart';
 import 'package:kingtous_blog/blog/pages/route_notfound_page.dart';
+import 'package:kingtous_blog/common/service_register.dart';
 import 'package:kingtous_blog/common/theme_utils.dart';
+import 'package:kingtous_blog/network/api_service.dart';
+import 'package:logger/logger.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -23,8 +30,10 @@ import 'package:theme_provider/theme_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  ServiceRegister.registerAllServices();
   runApp(MyApp());
 }
 
@@ -68,8 +77,11 @@ class MyApp extends StatelessWidget {
                     name: "/",
                     page: () => MainFramePage(),transition: Transition.fade),
                 GetPage(
-                    name: "/note",
+                    name: "/note/:page_id",
                     page: () => BlogDetailPage(),transition: Transition.fade),
+                GetPage(
+                    name: "/pages",
+                    page: () => BlogPage(),transition: Transition.fade),
                 GetPage(
                     name: "/about",
                     page: () => AboutMePage(),transition: Transition.fade),

@@ -41,7 +41,9 @@ abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: '搜索',
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed("/");
+        },
         child: Icon(Icons.search),
       ),
       endDrawer: _buildDrawer(context),
