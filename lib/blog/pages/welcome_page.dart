@@ -77,9 +77,12 @@ class _WelcomePageState extends State<WelcomePage>
             ),
           ),
           Container(
-            alignment: Alignment.center,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.topCenter,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              // mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   children: [
@@ -254,24 +257,21 @@ class _WelcomePageState extends State<WelcomePage>
                   decoration: BoxDecoration(
                       color: ThemeUtils.isDarkMode(context)?Colors.black:Colors.white
                   ),
-                  child: Stack(
+                  child: Wrap(
                     children: [
-                      Row(
-                        children: [
-                          MarkdownBody(data: e.content.toString()),
-                        ],
-                      ),
+                      Text(e.content.toString(),overflow: TextOverflow.clip,),
                     ],
                   ),
                 ),
                 SizedBox(
                   height: 16.h,
                 ),
-                Row(
+                Wrap(
                   children: [
                     Text(
                       "创建于 ${e.createDate.toString()}",
                       style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
+                      overflow: TextOverflow.clip,
                     ),
                   ],
                 )

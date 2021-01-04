@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:get/get.dart';
@@ -20,6 +22,7 @@ class _BlogDetailPageState extends BaseFramePageState<BlogDetailPage> {
 
   Future<BlogContent> content;
   bool noPageId = true;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -32,10 +35,12 @@ class _BlogDetailPageState extends BaseFramePageState<BlogDetailPage> {
   }
 
   Widget _buildBlog(BuildContext context, BlogContent data) {
+    // decode content
+    var contentDecoded = utf8.decode(base64.decode(data.content));
     return Column(
       children: [
         _buildHeader(context,data),
-        Expanded(child: getMarkdownWidget(data.content)),
+        Expanded(child: getMarkdownWidget(context,contentDecoded,scrollController: _scrollController)),
       ],
     );
   }

@@ -151,13 +151,9 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
                   decoration: BoxDecoration(
                     color: ThemeUtils.isDarkMode(context)?Colors.black:Colors.white
                   ),
-                  child: Stack(
+                  child: Row(
                     children: [
-                      Row(
-                        children: [
-                          MarkdownBody(data: e.content.toString()),
-                        ],
-                      ),
+                      Text(e.content.toString()),
                     ],
                   ),
                 ),

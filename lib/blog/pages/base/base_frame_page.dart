@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:theme_provider/theme_provider.dart';
+import 'dart:js' as js;
 
 /// page状态基类，存放一些公用的ui逻辑如显示面板
 abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
@@ -58,7 +59,7 @@ abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
     });
   }
 
-  List<String> btnName = ["首页", "文章", "标签", "关于"];
+  List<String> btnName = ["首页", "文章", "原博客", "关于"];
   List<String> routeName = ["/", "/pages", "/tags", "/about"];
 
   List<Widget> _buildNavigationButton(BuildContext context) {
@@ -73,7 +74,7 @@ abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
         color: Colors.white,
         size: 25,
       ),
-      "标签": Icon(
+      "原博客": Icon(
         Icons.tag,
         color: Colors.white,
         size: 25,
@@ -100,13 +101,16 @@ abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
               ),
             ],
           ),
-          onPressed: _currentIndex == i
-              ? null
-              : () {
-                  setState(() {
-                    _currentIndex = i;
-                  });
-                  Get.toNamed(routeName[_currentIndex]);
+          onPressed: () {
+            if (i == 2){
+              js.context.callMethod('open',['https://kingtous.cn']);
+            } else {
+              setState(() {
+                _currentIndex = i;
+              });
+              Get.toNamed(routeName[_currentIndex]);
+            }
+
                 },
         ),
       ));

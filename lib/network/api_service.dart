@@ -1,4 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:kingtous_blog/bean/blog_entity.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
