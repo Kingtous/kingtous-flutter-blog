@@ -47,7 +47,9 @@ Map<String, dynamic> _$BlogEntityToJson(BlogEntity instance) =>
 BlogContent _$BlogContentFromJson(Map<String, dynamic> json) {
   return BlogContent(
     json['pageId'] as int,
-    json['createDate'] as String,
+    json['createDate'] == null
+        ? null
+        : DateTime.parse(json['createDate'] as String),
     json['title'] as String,
     json['subtitle'] as String,
     json['tags'] as String,
@@ -58,7 +60,7 @@ BlogContent _$BlogContentFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$BlogContentToJson(BlogContent instance) =>
     <String, dynamic>{
       'pageId': instance.pageId,
-      'createDate': instance.createDate,
+      'createDate': instance.createDate?.toIso8601String(),
       'title': instance.title,
       'subtitle': instance.subtitle,
       'tags': instance.tags,

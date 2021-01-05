@@ -7,7 +7,7 @@
 //  */
 // import 'package:flutter/src/widgets/framework.dart';
 // import 'package:flutter_modular/flutter_modular.dart';
-// import 'package:kingtous_blog/blog/detail/blog_detail.dart';
+// import 'package:kingtous_blog/blog/detail/blog_ui_util.dart';
 // import 'package:kingtous_blog/main.dart';
 //
 // import 'blog/pages/main_frame_page.dart';

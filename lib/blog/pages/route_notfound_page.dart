@@ -71,7 +71,8 @@ class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
-    return BounceInDown(
+    return FadeIn(
+      duration: Duration(milliseconds: 100),
       child: Scaffold(
         backgroundColor:
             ThemeUtils.isDarkMode(context) ? Colors.black : Colors.white,

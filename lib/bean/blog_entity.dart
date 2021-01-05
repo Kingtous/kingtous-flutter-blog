@@ -38,7 +38,7 @@ class BlogEntity{
 class BlogContent{
 
 	int pageId;
-	String createDate;
+	DateTime createDate;
 	String title;
 	String subtitle;
 	String tags;

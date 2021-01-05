@@ -12,7 +12,7 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kingtous_blog/app_module.dart';
-import 'package:kingtous_blog/blog/detail/blog_detail.dart';
+import 'package:kingtous_blog/blog/detail/blog_ui_util.dart';
 import 'package:kingtous_blog/blog/detail/providers/blog_detail_provider.dart';
 import 'package:kingtous_blog/blog/pages/about_page.dart';
 import 'package:kingtous_blog/blog/pages/blog_detail_page.dart';
@@ -51,8 +51,8 @@ class MyApp extends StatelessWidget {
             // This is standard dark theme (id is default_dark_theme)
             ThemeUtils.getAppDarkTheme(),
             // This is standard light theme (id is default_light_theme)
-
           ],
+          defaultThemeId: ThemeUtils.systemIsDarkMode()?"dark":"light",
           child: ThemeConsumer(
               child: Builder(
             builder: (themeContext) => GetMaterialApp(
