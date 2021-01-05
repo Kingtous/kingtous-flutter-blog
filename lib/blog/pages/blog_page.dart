@@ -5,6 +5,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kingtous_blog/bean/blog_entity.dart';
+import 'package:kingtous_blog/blog/detail/blog_ui_util.dart';
 import 'package:kingtous_blog/blog/pages/base/base_frame_page.dart';
 import 'package:kingtous_blog/blog/pages/route_notfound_page.dart';
 import 'package:kingtous_blog/common/service_register.dart';
@@ -102,74 +103,7 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
       child: KCard(
         child: GestureDetector(
           onTap: ()=>_goToDetail(context,e),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            key: ValueKey(e.pageId),
-            children: [
-              // Line(),
-              SizedBox(height: 4.h,),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          e.title.toString(),
-                          style:
-                              GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 24)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          e.subtitle.toString(),
-                          style:
-                              GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Opacity(
-                      opacity:0.5 ,
-                      child: Container(
-                        padding: EdgeInsets.all(16.w),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: ThemeUtils.isDarkMode(context)?Colors.white:Colors.black),
-                            color: ThemeUtils.isDarkMode(context)
-                                ? Colors.black
-                                : Colors.white),
-                        child: Wrap(
-                          children: [MarkdownBody(data: e.content)],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16.h,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "创建于 ${e.createDate.toString()}",
-                          style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
+          child: getBlogDescWidget(context, e),
         ),
       ),
     );

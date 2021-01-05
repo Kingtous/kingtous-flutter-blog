@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
             builder: (themeContext) => GetMaterialApp(
               builder: (context, widget) => ResponsiveWrapper.builder(
                   ClampingScrollWrapper.builder(context, widget),
-                  maxWidth: 1440,
+                  maxWidth: 1920,
                   minWidth: 600,
                   defaultScale: true,
                   breakpoints: [
