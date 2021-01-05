@@ -7,6 +7,7 @@
  */
 import 'dart:convert';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -20,31 +21,33 @@ import 'dart:js' as js;
 import 'package:theme_provider/theme_provider.dart';
 
 Widget getMarkdownWidget(BuildContext context,String _markdownData,{ScrollController scrollController}) {
-  return Markdown(
-    controller: scrollController,
-    selectable: true,
-    data: _markdownData,
-    physics: BouncingScrollPhysics(),
-    imageDirectory: '',
-    onTapLink: (text,href,title){
-      js.context.callMethod('open',[href]);
-    },
-    imageBuilder: (uri,title,alt){
-      print("loading image:$uri");
-      return Center(child: Image.network(uri.toString()));
-    },
-    // styleSheet: MarkdownStyleSheet.fromTheme(ThemeProvider.themeOf(context).data),
-    styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
-    // blockSyntaxes: md.ExtensionSet.gitHubWeb.blockSyntaxes,
-    // inlineSyntaxes: md.ExtensionSet.gitHubWeb.inlineSyntaxes,
-    extensionSet:
-      md.ExtensionSet(md.ExtensionSet.gitHubWeb.blockSyntaxes, [
-      md.CodeSyntax(),
-      md.AutolinkSyntax(),
-      md.AutolinkExtensionSyntax(),
-      md.ImageSyntax(),
-      md.EmojiSyntax(),
-      ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
-    ]),
+  return FadeInUp(
+    child: Markdown(
+      controller: scrollController,
+      selectable: true,
+      data: _markdownData,
+      physics: BouncingScrollPhysics(),
+      imageDirectory: '',
+      onTapLink: (text,href,title){
+        js.context.callMethod('open',[href]);
+      },
+      imageBuilder: (uri,title,alt){
+        print("loading image:$uri");
+        return Center(child: Image.network(uri.toString()));
+      },
+      // styleSheet: MarkdownStyleSheet.fromTheme(ThemeProvider.themeOf(context).data),
+      styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
+      // blockSyntaxes: md.ExtensionSet.gitHubWeb.blockSyntaxes,
+      // inlineSyntaxes: md.ExtensionSet.gitHubWeb.inlineSyntaxes,
+      extensionSet:
+        md.ExtensionSet(md.ExtensionSet.gitHubWeb.blockSyntaxes, [
+        md.CodeSyntax(),
+        md.AutolinkSyntax(),
+        md.AutolinkExtensionSyntax(),
+        md.ImageSyntax(),
+        md.EmojiSyntax(),
+        ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
+      ]),
+    ),
   );
 }

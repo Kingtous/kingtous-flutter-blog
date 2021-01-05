@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kingtous_blog/common/theme_utils.dart';
@@ -70,16 +71,18 @@ class LoadingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
-    return Scaffold(
-      backgroundColor:
-          ThemeUtils.isDarkMode(context) ? Colors.black : Colors.white,
-      body: Container(
-        alignment: Alignment.center,
-        child: Text(
-          "Loading...",
-          style: GoogleFonts.notoSans(
-              textStyle: TextStyle(fontSize: 43.sp, color: ThemeUtils.isDarkMode(context) ? Colors.white : Colors.black)),
-          textAlign: TextAlign.center,
+    return BounceInDown(
+      child: Scaffold(
+        backgroundColor:
+            ThemeUtils.isDarkMode(context) ? Colors.black : Colors.white,
+        body: Container(
+          alignment: Alignment.center,
+          child: Text(
+            "Loading...",
+            style: GoogleFonts.notoSans(
+                textStyle: TextStyle(fontSize: 43.sp, color: ThemeUtils.isDarkMode(context) ? Colors.white : Colors.black)),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

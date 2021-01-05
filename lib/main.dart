@@ -47,17 +47,18 @@ class MyApp extends StatelessWidget {
         ],
         child: ThemeProvider(
           themes: [
-            ThemeUtils.getAppDarkTheme(),
-            // This is standard light theme (id is default_light_theme)
             ThemeUtils.getAppLightTheme(),
             // This is standard dark theme (id is default_dark_theme)
+            ThemeUtils.getAppDarkTheme(),
+            // This is standard light theme (id is default_light_theme)
+
           ],
           child: ThemeConsumer(
               child: Builder(
             builder: (themeContext) => GetMaterialApp(
               builder: (context, widget) => ResponsiveWrapper.builder(
                   ClampingScrollWrapper.builder(context, widget),
-                  maxWidth: 1200,
+                  maxWidth: 1440,
                   minWidth: 600,
                   defaultScale: true,
                   breakpoints: [

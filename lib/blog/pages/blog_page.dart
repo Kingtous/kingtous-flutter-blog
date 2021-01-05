@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -56,7 +57,7 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
         Expanded(
           child: ListView.builder(
             itemBuilder: (context, index) =>
-                _buildBlogListItem(context, data.content[index]),
+                _buildBlogListItem(context, data.content[index],index),
             itemCount: data.content.length,
           ),
         ),
@@ -92,86 +93,89 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
     );
   }
 
-  Widget _buildBlogListItem(BuildContext context, BlogContent e) {
-    return GestureDetector(
-      onTap: ()=>_goToDetail(context,e),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        key: ValueKey(e.pageId),
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: Divider(
-              height: 8.h,
-              indent: 1.w,
-              endIndent: 1.w,
+  Widget _buildBlogListItem(BuildContext context, BlogContent e, int index) {
+    return FadeInRight(
+      delay: Duration(milliseconds: index*150),
+      child: GestureDetector(
+        onTap: ()=>_goToDetail(context,e),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          key: ValueKey(e.pageId),
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Divider(
+                height: 8.h,
+                indent: 1.w,
+                endIndent: 1.w,
+              ),
             ),
-          ),
-          SizedBox(height: 4.h,),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // 主标题
-                Divider(
-                  height: 8.h,
-                  indent: 1.w,
-                  endIndent: 1.w,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      e.title.toString(),
-                      style:
-                          GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 24)),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      e.subtitle.toString(),
-                      style:
-                          GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: ThemeUtils.isDarkMode(context)?Colors.black:Colors.white
+            SizedBox(height: 4.h,),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 8.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // 主标题
+                  Divider(
+                    height: 8.h,
+                    indent: 1.w,
+                    endIndent: 1.w,
                   ),
-                  child: Row(
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(e.content.toString()),
+                      Text(
+                        e.title.toString(),
+                        style:
+                            GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 24)),
+                      ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "创建于 ${e.createDate.toString()}",
-                      style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        e.subtitle.toString(),
+                        style:
+                            GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(16.w),
+                    decoration: BoxDecoration(
+                      color: ThemeUtils.isDarkMode(context)?Colors.black:Colors.white
                     ),
-                  ],
-                )
-              ],
+                    child: Row(
+                      children: [
+                        Text(e.content.toString()),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16.h,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "创建于 ${e.createDate.toString()}",
+                        style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

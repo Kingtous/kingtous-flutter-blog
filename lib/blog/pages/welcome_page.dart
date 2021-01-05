@@ -5,6 +5,7 @@
  * @LastEditTime: 2020-11-12 18:28:07
  * @Description: 带搜索条的欢迎页
  */
+import 'package:animate_do/animate_do.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -87,28 +88,30 @@ class _WelcomePageState extends State<WelcomePage>
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
-                        margin: EdgeInsets.all(200.w),
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(40))),
-                        child: TextField(
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration.collapsed(
-                            border: InputBorder.none,
-                            hintText: "搜索内容",
-                            hintStyle: TextStyle(color: Colors.white),
-                            // prefixIcon:
-                            //     Icon(Icons.search, color: Colors.white)
+                      child: SlideInUp(
+                        child: Container(
+                          margin: EdgeInsets.all(200.w),
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(40))),
+                          child: TextField(
+                            style: TextStyle(color: Colors.white),
+                            decoration: InputDecoration.collapsed(
+                              border: InputBorder.none,
+                              hintText: "搜索内容",
+                              hintStyle: TextStyle(color: Colors.white),
+                              // prefixIcon:
+                              //     Icon(Icons.search, color: Colors.white)
+                            ),
+                            controller: _searchTextController,
+                            onSubmitted: (s) {
+                              if (s.trim().isNotEmpty) {
+                                _search(s);
+                              }
+                            },
                           ),
-                          controller: _searchTextController,
-                          onSubmitted: (s) {
-                            if (s.trim().isNotEmpty) {
-                              _search(s);
-                            }
-                          },
                         ),
                       ),
                     ),
@@ -144,56 +147,58 @@ class _WelcomePageState extends State<WelcomePage>
   bool get wantKeepAlive => true;
 
   Widget _buildBlogList(BuildContext context, BlogEntity data) {
-    return Container(
-      color: ThemeUtils.isDarkMode(context)?Colors.black:Colors.white,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(icon: Icon(Icons.delete), onPressed: () {
-                setState(() {
-                  this.data = null;
-                });
-              },)
-            ]
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) =>
-                  _buildBlogListItem(context, data.content[index]),
-              itemCount: data.content.length,
+    return SlideInUp(
+      child: Container(
+        color: ThemeUtils.isDarkMode(context)?Colors.black:Colors.white,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(icon: Icon(Icons.delete), onPressed: () {
+                  setState(() {
+                    this.data = null;
+                  });
+                },)
+              ]
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              FlatButton(
-                onPressed: data.first
-                    ? null
-                    : () {
-                  setState(() {
-                    this.data = getIt<ApiService>()
-                        .getPages(data.pageable.pageNumber - 1);
-                  });
-                },
-                child: Text("上一页"),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) =>
+                    _buildBlogListItem(context, data.content[index]),
+                itemCount: data.content.length,
               ),
-              Text(data.totalElements == 0 ? "啥都没有搜索到..." : "${data.pageable.pageNumber + 1}/${data.totalPages}"),
-              FlatButton(
-                onPressed: data.last
-                    ? null
-                    : () {
-                  setState(() {
-                    this.data = getIt<ApiService>()
-                        .searchPage(data.pageable.pageNumber + 1,searchKeyWords);
-                  });
-                },
-                child: Text("下一页"),
-              ),
-            ],
-          )
-        ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                FlatButton(
+                  onPressed: data.first
+                      ? null
+                      : () {
+                    setState(() {
+                      this.data = getIt<ApiService>()
+                          .getPages(data.pageable.pageNumber - 1);
+                    });
+                  },
+                  child: Text("上一页"),
+                ),
+                Text(data.totalElements == 0 ? "啥都没有搜索到..." : "${data.pageable.pageNumber + 1}/${data.totalPages}"),
+                FlatButton(
+                  onPressed: data.last
+                      ? null
+                      : () {
+                    setState(() {
+                      this.data = getIt<ApiService>()
+                          .searchPage(data.pageable.pageNumber + 1,searchKeyWords);
+                    });
+                  },
+                  child: Text("下一页"),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
