@@ -20,86 +20,88 @@ import 'package:kingtous_blog/blog/pages/base/base_frame_page.dart';
 import 'package:kingtous_blog/common/theme_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:markdown/markdown.dart' as md;
-
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
-
+import 'package:universal_html/js.dart' as js;
 import 'package:theme_provider/theme_provider.dart';
 
 Widget getMarkdownWidget(BuildContext context, String _markdownData,
     {ScrollController scrollController}) {
   return FadeInUp(
-    child: Markdown(
-      padding: EdgeInsets.all(16.w),
-      controller: scrollController,
-      selectable: true,
-      data: _markdownData,
-      physics: BouncingScrollPhysics(),
-      imageDirectory: '',
-      onTapLink: (text, href, title) {
-        js.context.callMethod('open', [href]);
-      },
-      imageBuilder: (uri, title, alt) {
-        print("loading image:$uri");
-        return Center(child: Image.network(uri.toString()));
-      },
-      // styleSheet: MarkdownStyleSheet.fromTheme(ThemeProvider.themeOf(context).data),
-      styleSheetTheme: ThemeUtils.isDarkMode(context)
-          ? MarkdownStyleSheetBaseTheme.material
-          : MarkdownStyleSheetBaseTheme.cupertino,
-      // blockSyntaxes: md.ExtensionSet.gitHubWeb.blockSyntaxes,
-      // inlineSyntaxes: md.ExtensionSet.gitHubWeb.inlineSyntaxes,
-      extensionSet: md.ExtensionSet(md.ExtensionSet.gitHubWeb.blockSyntaxes, [
-        md.CodeSyntax(),
-        md.AutolinkSyntax(),
-        md.AutolinkExtensionSyntax(),
-        md.ImageSyntax(),
-        md.EmojiSyntax(),
-        ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
-      ]),
-    ),
-  );
+      child: Markdown(
+          padding: EdgeInsets.all(16.w),
+          controller: scrollController,
+          selectable: true,
+          data: _markdownData,
+          physics: BouncingScrollPhysics(),
+          imageDirectory: '',
+          onTapLink: (text, href, title) {
+            js.context.callMethod('open', [href]);
+          },
+          imageBuilder: getMarkdownImageBuilder(),
+          styleSheet: MarkdownStyleSheet.fromTheme(
+              ThemeUtils.isDarkMode(context)
+                  ? ThemeData(
+                      brightness: Brightness.dark,
+                      textTheme: GoogleFonts.notoSansTextTheme(
+                          TextTheme(bodyText2: TextStyle(fontSize: 16))))
+                  : ThemeData(
+                      brightness: Brightness.light,
+                      textTheme: GoogleFonts.notoSansTextTheme(
+                          TextTheme(bodyText2: TextStyle(fontSize: 16))))),
+          styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
+          listItemCrossAxisAlignment: MarkdownListItemCrossAxisAlignment.start,
+          extensionSet:
+              md.ExtensionSet(md.ExtensionSet.gitHubWeb.blockSyntaxes, [
+            md.CodeSyntax(),
+            md.AutolinkSyntax(),
+            md.AutolinkExtensionSyntax(),
+            md.ImageSyntax(),
+            md.EmojiSyntax(),
+            ...md.ExtensionSet.gitHubWeb.inlineSyntaxes
+          ])));
 }
 
 Widget getBlogHeader(BuildContext context, BlogContent e) {
-  return Container(
-    decoration: BoxDecoration(
-        color: ThemeUtils.isDarkMode(context) ? Colors.grey : Colors.white),
-    padding: EdgeInsets.all(16.w),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            Text(
-              e.title.toString(),
-              style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 24)),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 16.h,
-        ),
-        Row(
-          children: [
-            Text(
-              e.subtitle.toString(),
-              style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 16.h,
-        ),
-        Row(
-          children: [
-            Text(
-              "创建于 ${e.createDate.year}年${e.createDate.month}月${e.createDate.day}日 ${e.createDate.hour}:${e.createDate.minute}",
-              style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
-            ),
-          ],
-        )
-      ],
+  return Opacity(
+    opacity: 0.9,
+    child: Container(
+      decoration: BoxDecoration(
+          color: ThemeUtils.isDarkMode(context) ? Colors.grey : Colors.white),
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Text(
+                e.title.toString(),
+                style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 24)),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          Row(
+            children: [
+              Text(
+                e.subtitle.toString(),
+                style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          Row(
+            children: [
+              Text(
+                "创建于 ${e.createDate.year}年${e.createDate.month}月${e.createDate.day}日 ${e.createDate.hour}:${e.createDate.minute}",
+                style: GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 16)),
+              ),
+            ],
+          )
+        ],
+      ),
     ),
   );
 }
@@ -120,8 +122,7 @@ Widget getBlogDescWidget(BuildContext context, BlogContent e) {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+            Wrap(
               children: [
                 Text(
                   e.title.toString(),
@@ -133,7 +134,7 @@ Widget getBlogDescWidget(BuildContext context, BlogContent e) {
             SizedBox(
               height: 16.h,
             ),
-            Row(
+            Wrap(
               children: [
                 Text(
                   e.subtitle.toString(),
@@ -180,4 +181,17 @@ Widget getBlogDescWidget(BuildContext context, BlogContent e) {
       ),
     ],
   );
+}
+
+MarkdownImageBuilder getMarkdownImageBuilder() {
+  return (Uri uri, String title, String alt) {
+    if (uri.hasAuthority) {
+      // 网图
+      // print("loading network image:$uri");
+      return Center(child: Image.network(uri.toString()));
+    } else {
+      // 可能是assets里面的图
+      return Center(child: Image.asset(uri.toString()));
+    }
+  };
 }

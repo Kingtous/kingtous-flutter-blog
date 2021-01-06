@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:theme_provider/theme_provider.dart';
-import 'dart:js' as js;
+import 'package:universal_html/js.dart' as js;
 
 /// page状态基类，存放一些公用的ui逻辑如显示面板
 abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {

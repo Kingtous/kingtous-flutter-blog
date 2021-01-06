@@ -41,8 +41,13 @@ class _BlogDetailPageState extends BaseFramePageState<BlogDetailPage> {
     return Column(
       children: [
         _buildHeader(context,data),
-        Expanded(child: getMarkdownWidget(context,contentDecoded,scrollController: _scrollController)),
-      ],
+        Expanded(child: Stack(
+        children: [
+            ThemeUtils.isDarkMode(context)? Opacity(opacity: 0.7,child: Container(height: double.infinity,width: double.infinity,child: Image.asset("bg/markdown-view-bg.jpg",fit: BoxFit.cover))):SizedBox(width: 0,),
+            getMarkdownWidget(context,contentDecoded,scrollController: _scrollController)
+        ],
+        ),
+        )]
     );
   }
 

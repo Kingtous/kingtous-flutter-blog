@@ -30,26 +30,31 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
 
   @override
   Widget buildContent(BuildContext context) {
-    return FutureBuilder(
-        future: data,
-        builder: (context, snapshot) {
-          debugPrint(snapshot.connectionState.toString());
-          debugPrint(snapshot.hasData.toString());
-          if (!snapshot.hasError) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.hasData) {
-              BlogEntity data = snapshot.data;
-              return _buildBlogList(context, data);
-            } else {
-              return LoadingPage();
-            }
-          } else {
-            print(snapshot.error);
-            return ErrorPage(
-              err: snapshot.error,
-            );
-          }
-        });
+    return Stack(
+      children: [
+        FadeIn(child: Opacity(opacity: 0.9,child: Container(height: double.infinity,width: double.infinity,child: Image.asset("bg/markdown-view-bg.jpg",fit: BoxFit.cover)))),
+        FutureBuilder(
+            future: data,
+            builder: (context, snapshot) {
+              debugPrint(snapshot.connectionState.toString());
+              debugPrint(snapshot.hasData.toString());
+              if (!snapshot.hasError) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
+                  BlogEntity data = snapshot.data;
+                  return _buildBlogList(context, data);
+                } else {
+                  return LoadingPage();
+                }
+              } else {
+                print(snapshot.error);
+                return ErrorPage(
+                  err: snapshot.error,
+                );
+              }
+            }),
+      ],
+    );
   }
 
   Widget _buildBlogList(BuildContext context, BlogEntity data) {
@@ -62,35 +67,37 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
             itemCount: data.content.length,
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(16.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              FlatButton(
-                onPressed: data.first
-                    ? null
-                    : () {
-                        setState(() {
-                          this.data = getIt<ApiService>()
-                              .getPages(data.pageable.pageNumber - 1);
-                        });
-                      },
-                child: Text("上一页"),
-              ),
-              Text("${data.pageable.pageNumber + 1}/${data.totalPages}"),
-              FlatButton(
-                onPressed: data.last
-                    ? null
-                    : () {
-                        setState(() {
-                          this.data = getIt<ApiService>()
-                              .getPages(data.pageable.pageNumber + 1);
-                        });
-                      },
-                child: Text("下一页"),
-              ),
-            ],
+        KCard(
+          child: Padding(
+            padding: EdgeInsets.all(8.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                FlatButton(
+                  onPressed: data.first
+                      ? null
+                      : () {
+                          setState(() {
+                            this.data = getIt<ApiService>()
+                                .getPages(data.pageable.pageNumber - 1);
+                          });
+                        },
+                  child: Text("上一页"),
+                ),
+                Text("${data.pageable.pageNumber + 1}/${data.totalPages}"),
+                FlatButton(
+                  onPressed: data.last
+                      ? null
+                      : () {
+                          setState(() {
+                            this.data = getIt<ApiService>()
+                                .getPages(data.pageable.pageNumber + 1);
+                          });
+                        },
+                  child: Text("下一页"),
+                ),
+              ],
+            ),
           ),
         )
       ],
@@ -98,12 +105,15 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
   }
 
   Widget _buildBlogListItem(BuildContext context, BlogContent e, int index) {
-    return FadeInRight(
-      duration: const Duration(milliseconds: 500),
-      child: KCard(
-        child: GestureDetector(
-          onTap: ()=>_goToDetail(context,e),
-          child: getBlogDescWidget(context, e),
+    return Opacity(
+      opacity: 0.9,
+      child: FadeInRight(
+        duration: const Duration(milliseconds: 500),
+        child: KCard(
+          child: GestureDetector(
+            onTap: ()=>_goToDetail(context,e),
+            child: getBlogDescWidget(context, e),
+          ),
         ),
       ),
     );

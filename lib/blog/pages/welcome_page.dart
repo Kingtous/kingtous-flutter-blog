@@ -156,7 +156,7 @@ class _WelcomePageState extends State<WelcomePage>
       child: Container(
         height: double.infinity,
         padding: EdgeInsets.all(16.w),
-        color: ThemeUtils.isDarkMode(context) ? Colors.black : Colors.white,
+        color: ThemeUtils.isDarkMode(context) ? Colors.black38 : Colors.white38,
         child: Column(
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -218,8 +218,11 @@ class _WelcomePageState extends State<WelcomePage>
       onTap: () {
         _goToDetail(context, e);
       },
-      child: KCard(
-        child: getBlogDescWidget(context, e),
+      child: Opacity(
+        opacity: 0.9,
+        child: KCard(
+          child: getBlogDescWidget(context, e),
+        ),
       ),
     );
   }
