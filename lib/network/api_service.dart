@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: "http://blog-server.kingtous.cn/")
+@RestApi(baseUrl: "https://blog-server.kingtous.cn/")
 abstract class ApiService {
 
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
