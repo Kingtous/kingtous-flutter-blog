@@ -5,26 +5,20 @@
  * @LastEditTime: 2020-10-14 23:47:49
  * @Description: Kingtous' Code
  */
-import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kingtous_blog/bean/blog_entity.dart';
-import 'package:kingtous_blog/blog/detail/providers/blog_detail_provider.dart';
-import 'package:kingtous_blog/blog/pages/base/base_frame_page.dart';
 import 'package:kingtous_blog/common/theme_utils.dart';
-import 'package:provider/provider.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:universal_html/js.dart' as js;
-import 'package:theme_provider/theme_provider.dart';
 
 Widget getMarkdownWidget(BuildContext context, String _markdownData,
-    {ScrollController scrollController}) {
+    {ScrollController? scrollController}) {
   return FadeInUp(
       child: Markdown(
           padding: EdgeInsets.all(16.w),
@@ -184,7 +178,7 @@ Widget getBlogDescWidget(BuildContext context, BlogContent e) {
 }
 
 MarkdownImageBuilder getMarkdownImageBuilder() {
-  return (Uri uri, String title, String alt) {
+  return (Uri uri, String? title, String? alt) {
     if (uri.hasAuthority) {
       // 网图
       // print("loading network image:$uri");

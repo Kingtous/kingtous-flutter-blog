@@ -20,7 +20,7 @@ class BlogPage extends StatefulWidget {
 }
 
 class _BlogPageState extends BaseFramePageState<BlogPage> {
-  Future<BlogEntity> data;
+  Future<BlogEntity>? data;
 
   @override
   void initState() {
@@ -32,7 +32,14 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
   Widget buildContent(BuildContext context) {
     return Stack(
       children: [
-        FadeIn(child: Opacity(opacity: 0.9,child: Container(height: double.infinity,width: double.infinity,child: Image.asset("bg/markdown-view-bg.jpg",fit: BoxFit.cover)))),
+        FadeIn(
+            child: Opacity(
+                opacity: 0.9,
+                child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    child: Image.asset("bg/markdown-view-bg.jpg",
+                        fit: BoxFit.cover)))),
         FutureBuilder(
             future: data,
             builder: (context, snapshot) {
@@ -41,7 +48,7 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
               if (!snapshot.hasError) {
                 if (snapshot.connectionState == ConnectionState.done &&
                     snapshot.hasData) {
-                  BlogEntity data = snapshot.data;
+                  BlogEntity data = snapshot.data as BlogEntity;
                   return _buildBlogList(context, data);
                 } else {
                   return LoadingPage();
@@ -49,7 +56,7 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
               } else {
                 print(snapshot.error);
                 return ErrorPage(
-                  err: snapshot.error,
+                  err: snapshot.error.toString(),
                 );
               }
             }),
@@ -63,7 +70,7 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
         Expanded(
           child: ListView.builder(
             itemBuilder: (context, index) =>
-                _buildBlogListItem(context, data.content[index],index),
+                _buildBlogListItem(context, data.content[index], index),
             itemCount: data.content.length,
           ),
         ),
@@ -106,12 +113,13 @@ class _BlogPageState extends BaseFramePageState<BlogPage> {
 
   Widget _buildBlogListItem(BuildContext context, BlogContent e, int index) {
     return Opacity(
+      key: ValueKey(index),
       opacity: 0.9,
       child: FadeInRight(
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 300),
         child: KCard(
           child: GestureDetector(
-            onTap: ()=>_goToDetail(context,e),
+            onTap: () => _goToDetail(context, e),
             child: getBlogDescWidget(context, e),
           ),
         ),

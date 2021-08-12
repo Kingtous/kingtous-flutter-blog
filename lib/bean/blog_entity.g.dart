@@ -8,20 +8,15 @@ part of 'blog_entity.dart';
 
 BlogEntity _$BlogEntityFromJson(Map<String, dynamic> json) {
   return BlogEntity(
-    (json['content'] as List)
-        ?.map((e) =>
-            e == null ? null : BlogContent.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    json['pageable'] == null
-        ? null
-        : BlogPageable.fromJson(json['pageable'] as Map<String, dynamic>),
+    (json['content'] as List<dynamic>)
+        .map((e) => BlogContent.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    BlogPageable.fromJson(json['pageable'] as Map<String, dynamic>),
     json['totalPages'] as int,
     json['totalElements'] as int,
     json['last'] as bool,
     json['size'] as int,
-    json['sort'] == null
-        ? null
-        : BlogSort.fromJson(json['sort'] as Map<String, dynamic>),
+    BlogSort.fromJson(json['sort'] as Map<String, dynamic>),
     json['number'] as int,
     json['numberOfElements'] as int,
     json['first'] as bool,
@@ -47,9 +42,7 @@ Map<String, dynamic> _$BlogEntityToJson(BlogEntity instance) =>
 BlogContent _$BlogContentFromJson(Map<String, dynamic> json) {
   return BlogContent(
     json['pageId'] as int,
-    json['createDate'] == null
-        ? null
-        : DateTime.parse(json['createDate'] as String),
+    DateTime.parse(json['createDate'] as String),
     json['title'] as String,
     json['subtitle'] as String,
     json['tags'] as String,
@@ -60,7 +53,7 @@ BlogContent _$BlogContentFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$BlogContentToJson(BlogContent instance) =>
     <String, dynamic>{
       'pageId': instance.pageId,
-      'createDate': instance.createDate?.toIso8601String(),
+      'createDate': instance.createDate.toIso8601String(),
       'title': instance.title,
       'subtitle': instance.subtitle,
       'tags': instance.tags,
@@ -69,9 +62,7 @@ Map<String, dynamic> _$BlogContentToJson(BlogContent instance) =>
 
 BlogPageable _$BlogPageableFromJson(Map<String, dynamic> json) {
   return BlogPageable(
-    json['sort'] == null
-        ? null
-        : BlogPageableSort.fromJson(json['sort'] as Map<String, dynamic>),
+    BlogPageableSort.fromJson(json['sort'] as Map<String, dynamic>),
     json['pageNumber'] as int,
     json['pageSize'] as int,
     json['offset'] as int,
@@ -92,9 +83,9 @@ Map<String, dynamic> _$BlogPageableToJson(BlogPageable instance) =>
 
 BlogPageableSort _$BlogPageableSortFromJson(Map<String, dynamic> json) {
   return BlogPageableSort(
-    json['sorted'] as bool,
-    json['unsorted'] as bool,
-    json['empty'] as bool,
+    sorted: json['sorted'] as bool,
+    unsorted: json['unsorted'] as bool,
+    empty: json['empty'] as bool,
   );
 }
 

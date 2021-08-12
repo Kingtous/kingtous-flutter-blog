@@ -20,8 +20,7 @@ class BlogDetailPage extends StatefulWidget {
 }
 
 class _BlogDetailPageState extends BaseFramePageState<BlogDetailPage> {
-
-  Future<BlogContent> content;
+  Future<BlogContent>? content;
   bool noPageId = true;
   ScrollController _scrollController = ScrollController();
 
@@ -38,17 +37,30 @@ class _BlogDetailPageState extends BaseFramePageState<BlogDetailPage> {
   Widget _buildBlog(BuildContext context, BlogContent data) {
     // decode content
     var contentDecoded = utf8.decode(base64.decode(data.content));
-    return Column(
-      children: [
-        _buildHeader(context,data),
-        Expanded(child: Stack(
-        children: [
-            ThemeUtils.isDarkMode(context)? Opacity(opacity: 0.7,child: Container(height: double.infinity,width: double.infinity,child: Image.asset("bg/markdown-view-bg.jpg",fit: BoxFit.cover))):SizedBox(width: 0,),
-            getMarkdownWidget(context,contentDecoded,scrollController: _scrollController)
-        ],
+    return Column(children: [
+      _buildHeader(context, data),
+      Expanded(
+        child: Stack(
+          children: [
+            ThemeUtils.isDarkMode(context)
+                ? Opacity(
+                    opacity: 0.7,
+                    child: Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        child: Image.asset("bg/markdown-view-bg.jpg",
+                            fit: BoxFit.cover)))
+                : SizedBox(
+                    width: 0,
+                  ),
+            Padding(
+                padding: EdgeInsets.all(24.w),
+                child: getMarkdownWidget(context, contentDecoded,
+                    scrollController: _scrollController))
+          ],
         ),
-        )]
-    );
+      )
+    ]);
   }
 
   @override
@@ -61,7 +73,7 @@ class _BlogDetailPageState extends BaseFramePageState<BlogDetailPage> {
           if (!noPageId || !snapshot.hasError) {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.hasData) {
-              BlogContent data = snapshot.data;
+              BlogContent data = snapshot.data as BlogContent;
               return _buildBlog(context, data);
             } else {
               return LoadingPage();
@@ -69,7 +81,7 @@ class _BlogDetailPageState extends BaseFramePageState<BlogDetailPage> {
           } else {
             print(snapshot.error);
             return ErrorPage(
-              err: snapshot.error,
+              err: snapshot.error.toString(),
             );
           }
         });
@@ -77,7 +89,7 @@ class _BlogDetailPageState extends BaseFramePageState<BlogDetailPage> {
 
   _buildHeader(BuildContext context, BlogContent e) {
     return KCard(
-      child: getBlogHeader(context,e),
+      child: getBlogHeader(context, e),
     );
   }
 }

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 class BlogDetailProvider extends ChangeNotifier {
   // 当前的路径
-  String currentPath;
+  String? currentPath;
 
   setPath(String path) {
     currentPath = path;

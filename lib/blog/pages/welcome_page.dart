@@ -31,13 +31,13 @@ class _WelcomePageState extends State<WelcomePage>
     with AutomaticKeepAliveClientMixin {
   var _searchTextController = TextEditingController();
 
-  Future<BlogEntity> data;
+  Future<BlogEntity>? data;
   var searchKeyWords;
 
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       showSimpleNotification(
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -130,7 +130,8 @@ class _WelcomePageState extends State<WelcomePage>
                                 return ErrorPage();
                               } else {
                                 if (snapshot.hasData) {
-                                  return _buildBlogList(context, snapshot.data);
+                                  return _buildBlogList(
+                                      context, snapshot.data as BlogEntity);
                                 } else {
                                   return LoadingPage();
                                 }

@@ -12,7 +12,8 @@ class ThemeUtils {
   }
 
   static bool systemIsDarkMode() {
-    return SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
+    return SchedulerBinding.instance!.window.platformBrightness ==
+        Brightness.dark;
   }
 
   static AppTheme getAppLightTheme() {
@@ -54,21 +55,21 @@ class Line extends StatelessWidget {
 class KCard extends StatefulWidget {
   final Widget child;
 
-  KCard({this.child});
+  KCard({required this.child});
 
   @override
   State<StatefulWidget> createState() => _KCardState();
 }
 
 class _KCardState extends State<KCard> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
     // print("init kcard state");
     _controller = AnimationController(
-      value: 16,
+        value: 16,
         lowerBound: 8,
         upperBound: 16,
         duration: const Duration(milliseconds: 500),

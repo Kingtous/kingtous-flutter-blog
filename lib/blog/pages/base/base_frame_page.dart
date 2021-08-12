@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:theme_provider/theme_provider.dart';
@@ -7,7 +6,6 @@ import 'package:universal_html/js.dart' as js;
 
 /// page状态基类，存放一些公用的ui逻辑如显示面板
 abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
-
   static var _currentIndex = 0;
   static String title = "Kingtous个人博客 | Kingtous Blog";
   static final endDrawerKey = GlobalKey<DrawerControllerState>();
@@ -18,7 +16,6 @@ abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
   @mustCallSuper
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -85,7 +82,7 @@ abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
         size: 25,
       ),
     };
-    List<Widget> btnWidgets = List();
+    List<Widget> btnWidgets = List.empty(growable: true);
     for (var i = 0; i < btnName.length; i++) {
       btnWidgets.add(Container(
         height: MediaQuery.of(context).size.height / 5,
@@ -94,7 +91,7 @@ abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              m[btnName[i]],
+              m[btnName[i]]!,
               Text(
                 btnName[i],
                 style: TextStyle(color: Colors.white),
@@ -102,16 +99,15 @@ abstract class BaseFramePageState<T extends StatefulWidget> extends State<T> {
             ],
           ),
           onPressed: () {
-            if (i == 2){
-              js.context.callMethod('open',['https://kingtous.cn']);
+            if (i == 2) {
+              js.context.callMethod('open', ['https://kingtous.cn']);
             } else {
               setState(() {
                 _currentIndex = i;
               });
               Get.toNamed(routeName[_currentIndex]);
             }
-
-                },
+          },
         ),
       ));
     }
